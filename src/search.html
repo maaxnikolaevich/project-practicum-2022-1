@@ -1,11 +1,11 @@
 <!doctype html>
-<html lang="ru">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <title>Search</title>
 </head>
 <body>
 <svg display="none" xmlns="http://www.w3.org/2000/svg">
@@ -132,11 +132,9 @@
                 </svg>
             </div>
             <div class="header__link">
-                <a href="http://localhost:3000/basket.html">
-                    <svg class="svg-white" width="16" height="16">
-                        <use href="#basket"></use>
-                    </svg>
-                </a>
+                <svg class="svg-white" width="16" height="16">
+                    <use href="#basket"></use>
+                </svg>
             </div>
         </div>
     </div>
@@ -160,27 +158,6 @@
         </div>
 
         <div class="catalog__content">
-            <div class="catalog__filters filters">
-                <div class="filters__controls">
-                    <svg class="filters__control-item" width="18" height="18"
-                         data-filters-open>
-                        <use href="#turn"></use>
-                    </svg>
-
-                    <svg class="filters__control-item" width="18" height="18"
-                         data-filters-hide>
-                        <use href="#un-turn"></use>
-                    </svg>
-                </div>
-
-                <div class="filters__items" id="filter-items">
-                </div>
-
-                <button class="filters__btn body-2" data-filters-reset>
-                    сбросить все
-                </button>
-            </div>
-
             <div class="catalog__inner">
                 <div class="catalog__header">
                     <h1 class="h1">Велосипеды</h1>
@@ -261,17 +238,17 @@
 
                             <div class="select__inner">
                                 <div class="select__item"
-                                     data-select-item=6>
+                                     data-select-item="alp">
                                     6
                                 </div>
 
                                 <div class="select__item"
-                                     data-select-item=12>
+                                     data-select-item="price-down">
                                     12
                                 </div>
 
                                 <div class="select__item"
-                                     data-select-item=24>
+                                     data-select-item="price-up">
                                     24
                                 </div>
                             </div>
@@ -300,5 +277,7 @@
         </div>
     </section>
 </main>
+
+<script src="search.js"></script>
 </body>
 </html>
