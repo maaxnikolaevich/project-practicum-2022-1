@@ -8,8 +8,9 @@ export default async function getCatalogItems(meta) {
             body: JSON.stringify(meta)
         });
         const json = await response.json();
+        console.log(json)
         const {items, pageCount} = json.data
-        
+
         return [items, pageCount]
     } catch (error) {
         console.error('Ошибка:', error);

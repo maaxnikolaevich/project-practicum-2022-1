@@ -3,6 +3,7 @@ import MobileNav from "@/components/mobile-nav";
 import Nav from '@/components/nav';
 import Catalog from "@/components/catalog";
 import Basket from "@/components/basket";
+import Search from "@/components/search";
 
 if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', () => {
@@ -42,13 +43,27 @@ async function init() {
         })
     }
 
-    const isBasket = window.location.href.includes('basket')
+    const isBasket = window.location.href.includes('basket');
 
     if (isBasket) {
         await new Basket(
             document.getElementById('basket-items'),
             document.getElementById('basket-info'),
-        ).init()
+        ).init();
+    } else {
+        await new Catalog(
+            document.getElementById('catalog-items'),
+            document.getElementById('filter-items'),
+            document.getElementById('pagination'),
+        ).init();
+    }
+    
+    const isSearch = window.location.href.includes('search');
+
+    if (isSearch) {
+        await new Search(
+            document.getElementById('catalog-items')
+        ).init();
     } else {
         await new Catalog(
             document.getElementById('catalog-items'),

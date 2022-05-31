@@ -225,13 +225,12 @@ export default class Basket {
         })
 
         if (result.ok) {
-            document.getElementById('basket-items').innerHTML = ''
-
+            document.getElementById('basket-items').innerHTML = '';
             document.getElementById(`basket-count`).innerText = (0).toString();
             document.getElementById(`basket-old-sum`).innerText = (0).toString() + ' ₽';
             document.getElementById(`basket-discount`).innerText = '- ' + (0).toString() + ' ₽';
             document.getElementById(`basket-sum`).innerText = (0).toString() + ' ₽';
-            document.getElementById('basket-length').innerText = (0).toString()
+            document.getElementById('basket-length').innerText = (0).toString();
         }
     }
 

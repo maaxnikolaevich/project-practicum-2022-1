@@ -7,7 +7,7 @@ import {encodeURL} from "@/utils/url";
 import addBasketItem from "@/api/addBasketItem";
 
 export default class Catalog {
-    constructor(el, filterEl, paginationEl) {
+    constructor(el,isSearch, filterEl, paginationEl) {
         this.el = el
         this.filterEl = filterEl
         this.paginationEl = paginationEl
@@ -29,9 +29,9 @@ export default class Catalog {
         this.setLoading(true)
 
         try {
-            this.meta.page = this.getCurrentPage()
-            this.meta.query = this.getCurrentQuery()
-            this.meta.sort = Cookie.getCookie('catalog-sort') || 'alp'
+            this.meta.page = this.getCurrentPage();
+            this.meta.query = this.getCurrentQuery();
+            this.meta.sort = Cookie.getCookie('catalog-sort') || 'alp';
 
             if (this.filterEl) {
                 this.elements.filter = await new Filter(this.filterEl, async (data) => {
@@ -42,7 +42,6 @@ export default class Catalog {
                 await this.elements.filter.init()
                 this.meta.filters = this.elements.filter.getCurrentFilter()
             }
-
             const [items, pageCount] = await getCatalogItems(this.meta)
             this.renderItems(items)
             this.initBasketToggleListeners()
@@ -58,11 +57,6 @@ export default class Catalog {
             })
 
             const limitEl = document.getElementById('limit')
-            
-            const searchElem = document.getElementById('search-form')
-            searchElem.addEventListener('submit', async (e) => {
-                e.preventDefault()
-                
             this.meta.limit = new Select({
                 el: limitEl,
                 onChange: async (item) => {
@@ -71,7 +65,9 @@ export default class Catalog {
                 },
                 cookieName: 'catalog-limit'
             })
-                
+            const searchElem = document.getElementById('search-form')
+            searchElem.addEventListener('submit', async (e) => {
+                e.preventDefault()
             const query = e.path[0].querySelector('[data-search-input]').value
             window.location.href = `http://localhost:3000/search.html?q=${query}`
             })
@@ -83,8 +79,8 @@ export default class Catalog {
             this.elements.pagination.renderPaginationItems(this.meta.page, pageCount)
 
             window.onpopstate = (async () => {
-                this.meta.page = this.getCurrentPage()
-                this.meta.query = this.getCurrentQuery()
+                this.meta.page = this.getCurrentPage();
+                this.meta.query = this.getCurrentQuery();
                 
                 if (this.elements.filter) {
                     this.meta.filters = this.elements.filter.getCurrentFilter()
@@ -132,7 +128,7 @@ export default class Catalog {
             this.el.classList.remove('catalog__items_loading')
         }
     }
-
+    
     getCurrentPage() {
         const params = new URL(window.location.href).searchParams
         return +params.get('page') || 1
