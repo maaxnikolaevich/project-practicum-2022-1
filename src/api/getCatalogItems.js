@@ -1,5 +1,6 @@
 export default async function getCatalogItems(meta) {
     try {
+        console.log(JSON.stringify(meta))
         const response = await fetch('http://localhost:5000/api/catalog/', {
             method: "POST",
             headers: {
@@ -8,7 +9,6 @@ export default async function getCatalogItems(meta) {
             body: JSON.stringify(meta)
         });
         const json = await response.json();
-        console.log(json)
         const {items, pageCount} = json.data
 
         return [items, pageCount]

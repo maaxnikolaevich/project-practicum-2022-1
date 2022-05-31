@@ -54,24 +54,24 @@
 		gap: 12px;
 	}
 	&__basket-length{
-
+		position: relative;
+		display: flex;
+		left: 5px;
+		bottom: 18px;
+		align-items: center;
+		text-align: center;
 		box-sizing: border-box;
 		width: 20px;
 		height: 20px;
-
 		background: #7C48BF;
 		border: 1px solid #FFFFFF;
 		border-radius: 2px;
-		display: flex;
-		align-items: center;
-		text-align: center;
-		
 		div{
 			width: 19px;
 			height: 21px;
 			left: 36px;
 			top: 0;
-
+			
 			font-style: normal;
 			font-weight: 300;
 			font-size: 12px;
@@ -81,18 +81,21 @@
 		}
 	}
 	&__link {
-		width: 36px;
-		height: 36px;
+		width: 48px;
+		height: 48px;
 		background-color: var(--primary-color);
 		border-radius: 50%;
 		display: flex;
 		justify-content: center;
 		align-items: center;
-
+		a{
+			padding-left: 20px;
+		}
 		img {
 			width: 16px;
 			height: 16px;
 		}
+		
 	}
 
 	&__tel {

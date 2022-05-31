@@ -5,16 +5,18 @@ import Select from "./select";
 import Cookie from "../utils/cookie";
 import {encodeURL} from "@/utils/url";
 import addBasketItem from "@/api/addBasketItem";
+import getBasketItems from "@/api/getBasketItems";
 
 export default class Catalog {
-    constructor(el,isSearch, filterEl, paginationEl) {
+    constructor(el, filterEl, paginationEl) {
         this.el = el
         this.filterEl = filterEl
         this.paginationEl = paginationEl
         this.elements = {
             filter: null,
             pagination: null,
-            sort: null
+            sort: null,
+            search: null
         }
         this.meta = {
             page: null,
@@ -31,7 +33,7 @@ export default class Catalog {
         try {
             this.meta.page = this.getCurrentPage();
             this.meta.query = this.getCurrentQuery();
-            this.meta.sort = Cookie.getCookie('catalog-sort') || 'alp';
+            this.meta.sort = Cookie.getCookie('catalog-sort') || 'alp'
 
             if (this.filterEl) {
                 this.elements.filter = await new Filter(this.filterEl, async (data) => {
@@ -86,19 +88,26 @@ export default class Catalog {
                     this.meta.filters = this.elements.filter.getCurrentFilter()
                     this.elements.filter.changeData(this.meta.filters)
                 }
-                
+
                 this.elements.pagination.renderPaginationItems(this.meta.page, pageCount)
 
                 await this.onMetaChange(false)
             })
+
+            await this.getBasketLen()
         } catch (e) {
-            console.log(e)
+
         } finally {
             this.setLoading(false)
         }
     }
-
-    async onMetaChange(isPushState = true) {
+    
+    async getBasketLen() {
+        const basket = await getBasketItems();
+        document.getElementById('basket-length').innerHTML = `<div class="basket-length__len">${basket.items.length}</div>`
+    }
+    
+    async onMetaChange(isPushState = true, query) {
         this.setLoading(true)
 
         try {
@@ -112,7 +121,13 @@ export default class Catalog {
                     code: 'page',
                     items: [this.meta.page]
                 }])
-                history.pushState({}, '', window.location.origin + encodeFilterData)
+
+                if(query) {
+                    history.pushState({}, '', window.location.origin + encodeFilterData + '&' + query)
+                } else {
+                    history.pushState({}, '', window.location.origin + encodeFilterData)
+                }
+
             }
         } catch (e) {
             console.log(e)
@@ -185,11 +200,11 @@ export default class Catalog {
             </div>
         </div>`
     }
-    
+
     initBasketToggleListeners() {
-        this.el.addEventListener('click', async event => {         
+        this.el.addEventListener('click', async event => {
             if (
-                !event.target.hasAttribute('data-basket-toggle') && 
+                !event.target.hasAttribute('data-basket-toggle') &&
                 !event.target.closest('[data-basket-toggle]')
             ) {
                 return
@@ -204,12 +219,15 @@ export default class Catalog {
 
             const id = +element.dataset.itemId
             const inBasket = !!element.dataset.basketToggle
-            
+
             const result = await addBasketItem(id, inBasket ? 0 : 1)
-            
+
             if (result.ok) {
                 element.classList.toggle('product-card__basket_active')
+
+                await this.getBasketLen()
             }
         })
     }
+    
 }
